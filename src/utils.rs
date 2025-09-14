@@ -135,10 +135,10 @@ pub fn a1_to_grid_range(a1: &str) -> Result<GridRange, GSheetError> {
 
     Ok(GridRange {
         sheet_id: None,
-        start_row_index: Some(start_row),
-        end_row_index: Some(end_row),
-        start_column_index: Some(start_col),
-        end_column_index: Some(end_col),
+        start_row_index: start_row,
+        end_row_index: end_row,
+        start_column_index: start_col,
+        end_column_index: end_col,
     })
 }
 
@@ -241,12 +241,10 @@ pub fn value_range_to_cells(
     let all_values = value_range.values.as_ref().unwrap_or(&all_values);
 
     let mut cells = Vec::new();
-    for row_index in grid_range.start_row_index.unwrap()..=grid_range.end_row_index.unwrap() {
-        for col_index in
-            grid_range.start_column_index.unwrap()..=grid_range.end_column_index.unwrap()
-        {
-            let i = row_index - grid_range.start_row_index.unwrap();
-            let j = col_index - grid_range.start_column_index.unwrap();
+    for row_index in grid_range.start_row_index..=grid_range.end_row_index {
+        for col_index in grid_range.start_column_index..=grid_range.end_column_index {
+            let i = row_index - grid_range.start_row_index;
+            let j = col_index - grid_range.start_column_index;
 
             let _cell_value = all_values.get(i).and_then(|r| r.get(j)).cloned();
 
@@ -299,12 +297,10 @@ pub fn value_range_to_hash_cell_map(
 
     let mut hash_map: HashMap<String, HashMap<usize, Cell>> = HashMap::new();
 
-    for _row_index in grid_range.start_row_index.unwrap()..=grid_range.end_row_index.unwrap() {
-        for _col_index in
-            grid_range.start_column_index.unwrap()..=grid_range.end_column_index.unwrap()
-        {
-            let i = _row_index - grid_range.start_row_index.unwrap();
-            let j = _col_index - grid_range.start_column_index.unwrap();
+    for _row_index in grid_range.start_row_index..=grid_range.end_row_index {
+        for _col_index in grid_range.start_column_index..=grid_range.end_column_index {
+            let i = _row_index - grid_range.start_row_index;
+            let j = _col_index - grid_range.start_column_index;
             let col = col_index_to_a1(_col_index)?;
 
             let _cell_value = all_values.get(i).and_then(|r| r.get(j)).cloned();

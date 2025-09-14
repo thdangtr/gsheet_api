@@ -28,13 +28,13 @@ pub struct GridRange {
     /// The sheet this range is on.
     pub sheet_id: Option<i32>,
     /// The start row (inclusive) of the range, or not set if unbounded.
-    pub start_row_index: Option<usize>,
+    pub start_row_index: usize,
     /// The end row (exclusive) of the range, or not set if unbounded.
-    pub end_row_index: Option<usize>,
+    pub end_row_index: usize,
     /// The start column (inclusive) of the range, or not set if unbounded.
-    pub start_column_index: Option<usize>,
+    pub start_column_index: usize,
     /// The end column (exclusive) of the range, or not set if unbounded.
-    pub end_column_index: Option<usize>,
+    pub end_column_index: usize,
 }
 
 /// Properties of a grid.

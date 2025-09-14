@@ -4,6 +4,7 @@
 //! such as retrieving spreadsheet metadata, properties, and accessing individual sheets.
 
 use super::sheet::SheetOperations;
+use crate::auth::AuthError;
 use crate::client::GoogleSheetClient;
 use crate::error::GSheetError;
 use crate::models::Spreadsheet;
@@ -306,7 +307,12 @@ impl GetSpreadsheetOperations {
             self.spreadsheet.gsheet_client.base_url, self.spreadsheet.spreadsheet_id
         );
 
-        let mut auth_client = self.spreadsheet.gsheet_client.auth_client.lock().unwrap();
+        let mut auth_client = self
+            .spreadsheet
+            .gsheet_client
+            .auth_client
+            .lock()
+            .map_err(|e| GSheetError::AuthError(AuthError::Other(e.to_string())))?;
 
         auth_client.ensure_valid_token().await?;
 

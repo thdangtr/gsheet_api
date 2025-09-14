@@ -62,8 +62,9 @@ impl AccessTokenBuilder {
         }
 
         Ok(AccessToken::new(
-            self.token.unwrap(),
-            self.expires_in.unwrap(),
+            self.token
+                .unwrap_or_else(|| AuthError::Other("token must be set".into()).to_string()),
+            self.expires_in.unwrap_or(0),
         ))
     }
 }

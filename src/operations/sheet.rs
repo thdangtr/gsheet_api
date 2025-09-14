@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use crate::auth::AuthError;
 use crate::error::GSheetError;
 use crate::models::{
     BatchUpdateValuesResponse, BatchValueRanges, Cell, DateTimeRenderOption, Dimension,
@@ -94,7 +95,7 @@ impl BatchGetValueRangeOperations {
             .gsheet_client
             .auth_client
             .lock()
-            .unwrap();
+            .map_err(|e| GSheetError::AuthError(AuthError::Other(e.to_string())))?;
 
         let mut request = self
             .sheet
@@ -187,7 +188,7 @@ impl BatchUpdateValueRangeOperations {
             .gsheet_client
             .auth_client
             .lock()
-            .unwrap();
+            .map_err(|e| GSheetError::AuthError(AuthError::Other(e.to_string())))?;
 
         let body = serde_json::json!({
             "valueInputOption": self.value_input_option,
@@ -263,7 +264,7 @@ impl GetAllValueOperations {
             .gsheet_client
             .auth_client
             .lock()
-            .unwrap();
+            .map_err(|e| GSheetError::AuthError(AuthError::Other(e.to_string())))?;
 
         let request = self
             .sheet
